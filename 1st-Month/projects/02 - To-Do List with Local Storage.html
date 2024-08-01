@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #todo-list { list-style-type: none; padding: 0; }
+        #todo-list li { padding: 10px; margin: 5px; background-color: #f9f9f9; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <input type="text" id="task" placeholder="Add a new task">
+    <button onclick="addTask()">Add Task</button>
+    <ul id="todo-list"></ul>
+    <script>
+        document.addEventListener('DOMContentLoaded', loadTasks);
+
+        function addTask() {
+            const taskInput = document.getElementById('task');
+            const task = taskInput.value.trim();
+
+            if (task) {
+                const taskList = document.getElementById('todo-list');
+                const taskItem = document.createElement('li');
+                taskItem.textContent = task;
+                taskList.appendChild(taskItem);
+                saveTask(task);
+                taskInput.value = '';
+            }
+        }
+
+        function saveTask(task) {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.push(task);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        function loadTasks() {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            const taskList = document.getElementById('todo-list');
+            tasks.forEach(task => {
+                const taskItem = document.createElement('li');
+                taskItem.textContent = task;
+                taskList.appendChild(taskItem);
+            });
+        }
+    </script>
+</body>
+</html>
